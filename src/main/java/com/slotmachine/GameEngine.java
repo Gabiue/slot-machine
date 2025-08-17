@@ -4,15 +4,15 @@ import java.util.Map;
 import java.util.Random;
 
 public class GameEngine {
-    private static final String[] SYMBOLS = {"🍇", "🍉", "🍋", "🍊", "🍌", "🍒"};
+    private static final String[] SYMBOLS = {"uva", "melancia", "limao", "laranja", "banana", "cereja"};
     private static final int[] WEIGHTS = {2, 3, 6, 6, 4, 5};
     private static final Map<String, Integer> PAYTABLE = Map.of(
-            "🍇", 25,
-            "🍉", 15,
-            "🍒", 12,
-            "🍌", 8,
-            "🍊", 6,
-            "🍋", 5
+            "uva", 25,
+            "melancia", 15,
+            "cereja", 12,
+            "banana", 8,
+            "laranja", 6,
+            "limao", 5
     );
 
     private static final int REELS = 3;

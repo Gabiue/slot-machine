@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SlotMachineGUI extends JFrame {
     private static final Color PIXEL_BG = new Color(40, 44, 52);
@@ -13,7 +15,7 @@ public class SlotMachineGUI extends JFrame {
     private static final Color PIXEL_RED = new Color(240, 113, 120);
     private static final Font PIXEL_FONT = new Font("Monospaced", Font.BOLD, 16);
     private static final Font PIXEL_FONT_BIG = new Font("Monospaced", Font.BOLD, 24);
-    private static final Font PIXEL_FONT_HUGE = new Font("Monospaced", Font.BOLD, 48);
+    private static final Font PIXEL_FONT_HUGE = new Font("Monospaced", Font.BOLD, 24);
 
     private GameEngine gameEngine;
     private JLabel[] reelLabels;
@@ -26,10 +28,18 @@ public class SlotMachineGUI extends JFrame {
     private Timer animationTimer;
     private int apostaAtual = 10;
     private boolean girando = false;
+    private Map<String, ImageIcon> symbolImages;
 
     public SlotMachineGUI() {
         gameEngine = new GameEngine(100);
+        loadImages();
         initializeUI();
+
+        // Spin inicial para mostrar símbolos
+        String[] simbolosIniciais = gameEngine.spin();
+        for (int i = 0; i < reelLabels.length; i++) {
+            setReelSymbol(reelLabels[i], simbolosIniciais[i]);
+        }
     }
 
     private void initializeUI() {
@@ -75,7 +85,7 @@ public class SlotMachineGUI extends JFrame {
 
         reelLabels = new JLabel[3];
         for (int i = 0; i < 3; i++) {
-            reelLabels[i] = new JLabel("🍋", SwingConstants.CENTER);
+            reelLabels[i] = new JLabel("", SwingConstants.CENTER);
             reelLabels[i].setFont(PIXEL_FONT_HUGE);
             reelLabels[i].setOpaque(true);
             reelLabels[i].setBackground(PIXEL_PANEL);
@@ -84,7 +94,7 @@ public class SlotMachineGUI extends JFrame {
                     BorderFactory.createLineBorder(PIXEL_GOLD, 3),
                     BorderFactory.createEmptyBorder(20, 20, 20, 20)
             ));
-            reelLabels[i].setPreferredSize(new Dimension(120, 120));
+            reelLabels[i].setPreferredSize(new Dimension(100, 80));
             reelsContainer.add(reelLabels[i]);
         }
 
@@ -162,6 +172,44 @@ public class SlotMachineGUI extends JFrame {
         return button;
     }
 
+    private void loadImages() {
+        symbolImages = new HashMap<>();
+
+        // Mapeamento dos símbolos para os arquivos
+        Map<String, String> symbolFiles = Map.of(
+                "uva", "/images/1f347.png",
+                "melancia", "/images/1f349.png",
+                "limao", "/images/1f34b.png",
+                "laranja", "/images/1f34a.png",
+                "banana", "/images/1f34c.png",
+                "cereja", "/images/1f352.png"
+        );
+
+        for (Map.Entry<String, String> entry : symbolFiles.entrySet()) {
+            try {
+                ImageIcon icon = new ImageIcon(getClass().getResource(entry.getValue()));
+                // Redimensionar para 48x48
+                Image img = icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
+                symbolImages.put(entry.getKey(), new ImageIcon(img));
+            } catch (Exception e) {
+                System.err.println("Erro ao carregar imagem: " + entry.getValue());
+                // Fallback para texto se imagem falhar
+                symbolImages.put(entry.getKey(), null);
+            }
+        }
+    }
+
+    private void setReelSymbol(JLabel reel, String symbol) {
+        ImageIcon icon = symbolImages.get(symbol);
+        if (icon != null) {
+            reel.setIcon(icon);
+            reel.setText("");
+        } else {
+            reel.setIcon(null);
+            reel.setText(symbol.toUpperCase());
+        }
+    }
+
     private void alterarAposta(int delta) {
         int novaAposta = apostaAtual + delta;
         if (novaAposta >= 5 && gameEngine.podeApostar(novaAposta)) {
@@ -181,14 +229,15 @@ public class SlotMachineGUI extends JFrame {
         mensagemLabel.setText("GIRANDO...");
         mensagemLabel.setForeground(Color.YELLOW);
 
-        String[] simbolosAnimacao = {"🍇", "🍉", "🍋", "🍊", "🍌", "🍒"};
+        String[] simbolosAnimacao = {"uva", "melancia", "limao", "laranja", "banana", "cereja"};
         int[] frameCount = {0};
 
         animationTimer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (JLabel reel : reelLabels) {
-                    reel.setText(simbolosAnimacao[(int)(Math.random() * simbolosAnimacao.length)]);
+                    String randomSymbol = simbolosAnimacao[(int)(Math.random() * simbolosAnimacao.length)];
+                    setReelSymbol(reel, randomSymbol);
                 }
 
                 frameCount[0]++;
@@ -206,7 +255,7 @@ public class SlotMachineGUI extends JFrame {
         String[] resultado = gameEngine.spin();
 
         for (int i = 0; i < reelLabels.length; i++) {
-            reelLabels[i].setText(resultado[i]);
+            setReelSymbol(reelLabels[i], resultado[i]);
         }
 
         int premio = gameEngine.processarAposta(resultado, apostaAtual);
