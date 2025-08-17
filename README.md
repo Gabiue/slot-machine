@@ -151,4 +151,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ⭐ Se você gostou do projeto, deixe uma estrela!
 
-📬 **Contato**: [Seu Email] | [Seu LinkedIn]
+📬 **Contato**:  https://www.linkedin.com/in/gabriel-kaue/
