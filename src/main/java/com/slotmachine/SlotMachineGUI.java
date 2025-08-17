@@ -43,7 +43,7 @@ public class SlotMachineGUI extends JFrame {
     }
 
     private void initializeUI() {
-        setTitle("🎰 PIXEL SLOTS");
+        setTitle("🎰 SLOT MACHINE");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setBackground(PIXEL_BG);
@@ -67,7 +67,7 @@ public class SlotMachineGUI extends JFrame {
         JPanel panel = new JPanel(new FlowLayout());
         panel.setBackground(PIXEL_BG);
 
-        JLabel titleLabel = new JLabel("🎰 PIXEL SLOTS 🎰");
+        JLabel titleLabel = new JLabel("🎰 SLOT MACHINE 🎰");
         titleLabel.setForeground(PIXEL_GOLD);
         titleLabel.setFont(PIXEL_FONT_BIG);
 
