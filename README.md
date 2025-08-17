@@ -9,7 +9,9 @@ Um jogo de caça-níquel desenvolvido em Java com interface gráfica estilo pixe
 
 ## 📸 Screenshots
 
-![Screenshot](docs/images/img.png)
+<div align="center">
+<img src="docs/images/screenshot.png" alt="Screenshot" width="500">
+</div>
 ## 🎮 Sobre o Projeto
 
 Este projeto é uma evolução de uma slot machine console para uma versão com interface gráfica completa. O jogo apresenta visual pixel art, animações suaves e mecânicas de jogo balanceadas.
