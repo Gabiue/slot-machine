@@ -10,7 +10,7 @@ Um jogo de caça-níquel desenvolvido em Java com interface gráfica estilo pixe
 ## 📸 Screenshots
 
 <div align="center">
-<img src="docs/images/img.png" alt="Screenshot" width="500">
+<img src="docs/images/img.png" alt="Screenshot" width="250">
 </div>
 ## 🎮 Sobre o Projeto
 
